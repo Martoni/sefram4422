@@ -1,0 +1,23 @@
+#! /usr/bin/python3
+# -*- coding: utf-8 -*-
+#-----------------------------------------------------------------------------
+# Author:   Fabien Marteau <fabien.marteau@armadeus.com>
+# Created:  03/01/2022
+#-----------------------------------------------------------------------------
+#  Copyright (2021)  Armadeus Systems
+#-----------------------------------------------------------------------------
+""" sf4422_repl
+"""
+
+import sys
+
+class sf4422_repl(object):
+    """
+    """
+
+if __name__ == "__main__":
+    print("TODO: sf4422 tester binary\n")
+    if sys.version_info[0] < 3:
+        raise Exception("Must be using Python 3")
+    print(sf4422_repl.__doc__)
+
