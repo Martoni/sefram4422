@@ -18,19 +18,26 @@ class Sf4422(object):
     """
 
 def usages():
-    print("sf4422 -s [speed] -d [ttydev] -h")
+    print("sf4422 [options]")
+    print("-h, --help             print this message")
+    print("-s, --speed=[baudrate] set baudrate (default 19200)")
+    print("-d, --ttydev=[devname] set uart device (default /dev/ttyUSB0")
+    print("-v, --verbose          print some verbose messages")
+    print("-f, --freq=[frequency] set frequency")
+    print("-x, --debug            print some informations")
 
 if __name__ == "__main__":
     if sys.version_info[0] < 3:
         raise Exception("Must be using Python 3")
-    print(Sf4422.__doc__)
 
-    options, remainder = getopt.getopt(sys.argv[1:], 'hs:d:v',
-                                       ['help', 'speed=', 'ttydev=', 'verbose'])
-
+    options, remainder = getopt.getopt(sys.argv[1:], 'hs:d:vf:x',
+                                       ['help', 'speed=', 'ttydev=',
+                                        'verbose', 'freq=', 'debug'])
     baudrate = 19200
     devname = "/dev/ttyUSB0"
     verbose = False
+    freq = None
+    debug = False
     for opt, arg in options:
         if opt in ('-h', '--help'):
             usages()
@@ -41,12 +48,23 @@ if __name__ == "__main__":
             devname = arg
         elif opt in ('-v', '--verbose'):
             verbose = True
+        elif opt in ('-f', '--freq'):
+            freq = float(arg)
+        elif opt in ('-x', '--debug'):
+            debug = True
 
     if verbose:
         print(f"Connecting to Sefram4422 with uart {devname} @ {baudrate}")
 
+
     sf = Sefram4422(devname)
 
-    gfreq = sf.get_freq()
-    print(sf.identify())
-    print(f"Freq: {gfreq}")
+    if freq is not None:
+        sf.set_freq(freq)
+        if verbose:
+            print(f"Frequency set to {freq:e}")
+
+    if debug:
+        gfreq = sf.get_freq()
+        print(sf.identify())
+        print(f"Freq: {gfreq:e}")

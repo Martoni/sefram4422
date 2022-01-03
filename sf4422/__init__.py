@@ -48,7 +48,10 @@ class Sefram4422(object):
         retval = self.ser.readline()
         return retval.decode('utf-8').strip().split(",")
 
-    def get_freq(self):
+    def get_freq(self) -> float:
         self.ser.write("*FREQ?\n".encode("utf-8"))
         retval = float(self.ser.readline().decode("utf-8").strip())
         return retval
+
+    def set_freq(self, freq: float):
+        self.ser.write(f"*FREQ {freq:e}\n".encode("utf-8"))
