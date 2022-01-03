@@ -28,5 +28,5 @@ setup(
     scripts=['bin/sf4422'],
 
     # Run-time dependencies
-    install_requires=['serial'],
+    install_requires=['pyserial', 'scpi'],
 )

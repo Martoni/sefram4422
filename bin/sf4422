@@ -10,14 +10,43 @@
 """
 
 import sys
+import getopt
+from sf4422 import Sefram4422
 
-class sf4422_repl(object):
+class Sf4422(object):
+    """ Drive sefram4422 and test module
     """
-    """
+
+def usages():
+    print("sf4422 -s [speed] -d [ttydev] -h")
 
 if __name__ == "__main__":
-    print("TODO: sf4422 tester binary\n")
     if sys.version_info[0] < 3:
         raise Exception("Must be using Python 3")
-    print(sf4422_repl.__doc__)
+    print(Sf4422.__doc__)
 
+    options, remainder = getopt.getopt(sys.argv[1:], 'hs:d:v',
+                                       ['help', 'speed=', 'ttydev=', 'verbose'])
+
+    baudrate = 19200
+    devname = "/dev/ttyUSB0"
+    verbose = False
+    for opt, arg in options:
+        if opt in ('-h', '--help'):
+            usages()
+            sys.exit(0)
+        elif opt in ('-s', '--speed'):
+            baudrate = int(arg)
+        elif opt in ('-d', '--ttydev='):
+            devname = arg
+        elif opt in ('-v', '--verbose'):
+            verbose = True
+
+    if verbose:
+        print(f"Connecting to Sefram4422 with uart {devname} @ {baudrate}")
+
+    sf = Sefram4422(devname)
+
+    gfreq = sf.get_freq()
+    print(sf.identify())
+    print(f"Freq: {gfreq}")
